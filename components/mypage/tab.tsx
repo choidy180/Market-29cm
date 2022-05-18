@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { media } from "../../styles/theme";
 
-export default function MyPageTab(){
+export default function MyPageTab(isLoggedIn){
   return(
     <Tab>
       <ContentBox>
@@ -13,6 +13,7 @@ export default function MyPageTab(){
             alt=''
             width={1000}
             height={1200}
+            onClick={()=>{console.log(isLoggedIn);}}
           />
         </Img>
         <Name>크리스탈</Name>

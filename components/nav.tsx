@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHeart, faShoppingBag, faRightToBracket, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHeart, faShoppingBag, faRightToBracket, faRightFromBracket, faUpload, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 import React from 'react'
 import Link from "next/link";
@@ -25,6 +25,14 @@ export default function Nav({isLoggedIn}){
             </Link>
           </NavBoxLeft>
           <NavBoxRight>
+            {isLoggedIn["isLoggedIn"] ?
+              <Link href={"/upload"}>
+                <NavText>
+                  <FontAwesomeIcon icon={faFolderPlus}/>
+                  <span>UPLOAD</span>
+                </NavText>
+              </Link> : "" 
+            }
             {router.pathname === '/mypage' 
               ? ""
               : 

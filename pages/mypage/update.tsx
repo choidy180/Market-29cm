@@ -3,21 +3,61 @@ import Nav from "../../components/nav";
 import styled from "styled-components";
 import { media } from "../../styles/theme";
 import Image from "next/image";
-import { useEffect } from "react";
-import { dbService } from "../../firebase/firebaseConfig";
+import { useEffect, useState } from "react";
+import { dbService, storageService } from "../../firebase/firebaseConfig";
+import { updateProfile } from "firebase/auth";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
 
 const MyPageUpdate: NextPage = (props) => {
+  const [email, setEmail] = useState(""); 
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [imageLoad, setImageLoad] = useState();
   const getMyInfo = async () => {
-    await console.log(props["userObj"]);
-    // const userInfo = await dbService.colle
+    await setEmail(props["userObj"] != null ? props["userObj"]["email"] : "");
+    await setName(props["userObj"] != null ? props["userObj"]["displayName"] : "");
   };
   useEffect(() => {
     getMyInfo();
+    setEmail(props["userObj"] != null ? props["userObj"]["email"] : "");
   },[]);
+  const onChangeValue = (event) => {
+    const {
+      target: {name, value},
+    } = event;
+    if(name === "name"){
+      setName(value);
+    } else if(name==="phonNumber"){
+      setPhoneNumber(value);
+    }
+  }
+  const onFileChange = async (event) => {
+    const {
+      target: { files },
+    } = event;
+    const reader = new FileReader();
+    let UploadImageUrl = "";
+    // // 완료되면 finidhedEvent를 받는다.
+    reader.onloadend = (finishedEvent) => {
+      setImageLoad(finishedEvent.currentTarget["result"]);
+    }
+    reader.readAsDataURL(files[0]);
+    // 파일 참조 경로 만들기
+    const ImageRef = ref(storageService, `${props["userObj"]["uid"]}/${uuidv4()}}`);
+    // storage 참조 경로로 파일 업로드 하기
+    const uploadImage = await uploadString(ImageRef, imageLoad, "data_url");
+    UploadImageUrl = await getDownloadURL(uploadImage.ref);
+  }
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    console.log(props["userObj"]);
+    // updateProfile(props["userObj"], {displayName: newDisplayName});
+  }
   return (
     <Container>
       <Nav isLoggedIn={props}/>
-        <Box>
+        <Box onSubmit={onSubmit}>
           <Title>개인정보 수정</Title>
           <Img>
             <Image 
@@ -28,7 +68,12 @@ const MyPageUpdate: NextPage = (props) => {
             />
           </Img>
           <ImgButton htmlFor="picture">
-            <UploadImageButton id="picture" type="file" accept="image/*"/>
+            <UploadImageButton 
+              id="picture" 
+              type="file" 
+              accept="image/*"
+              onChange={onFileChange}
+            />
             프로필 이미지 수정
           </ImgButton>
           <ContentBox>
@@ -41,11 +86,15 @@ const MyPageUpdate: NextPage = (props) => {
             <Content>
               <ContentInput
                 type="text"
-                placeholder="example@google.com"
+                name="email"
+                placeholder="example@email.com"
               />
               <ContentInput
                 type="text"
-                placeholder="크리스탈"
+                name="name"
+                placeholder={name}
+                value={name}
+                onChange={onChangeValue}
               />
               <ContentInput
                 type="text"
@@ -53,11 +102,13 @@ const MyPageUpdate: NextPage = (props) => {
               />
               <LastContentInput
                 type="text"
+                name="phonNumber"
                 placeholder="010-0000-0000"
+                onChange={onChangeValue}
               />
             </Content>
           </ContentBox>
-          <Button>정보수정하기</Button>
+          <Button type="submit">정보수정하기</Button>
         </Box>
     </Container>
   )
@@ -73,7 +124,7 @@ const Container = styled.div`
   justify-content: center;
   overflow: hidden;
 `;
-const Box = styled.div`
+const Box = styled.form`
   width: 100%;
   height: calc(100vh - 64px);
   display: flex;

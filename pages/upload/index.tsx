@@ -7,7 +7,7 @@ import { media } from "../../styles/theme";
 import { dbService, storageService } from "../../firebase/firebaseConfig";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
-import { ref, uploadString } from "firebase/storage";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 
 const Upload: NextPage = (props) => {
@@ -43,18 +43,26 @@ const Upload: NextPage = (props) => {
   const onSubmit =  async (event) => {
     event.preventDefault();
     const dataBase = collection(dbService, "Content");
+    let UploadImageUrl = "";
+    if(imageLoad != ""){
+      // 파일 참조 경로 만들기
+      const ImageRef = ref(storageService, `${props["userObj"]["uid"]}/${uuidv4()}}`);
+      // storage 참조 경로로 파일 업로드 하기
+      const uploadImage = await uploadString(ImageRef, imageLoad, "data_url");
+      UploadImageUrl = await getDownloadURL(uploadImage.ref);
+    }
+    // 게시글 작성시 사진도 같이 firestore 생성
     await addDoc(dataBase, {
       email: props["userObj"]["email"],
       title: title,
       price: price,
       explain: explain,
+      imageUrl: UploadImageUrl,
       uploadDate: Date.now(),
     });
     setTitle("");
     setPrice("");
     setExplain("");
-    const fileRef = ref(storageService, `${props["userObj"]["uid"]}/${uuidv4()}}`);
-    const response = await uploadString(fileRef, imageLoad, "data_url");
     alert("등록완료 되었습니다.");
   }
   return(
@@ -220,6 +228,7 @@ const Price = styled.input`
   margin-top: 12px;
   background-color: transparent;
   transition: all .15s ease-in-out;
+  -webkit-appearance: none;
   :focus{
     border: 1px solid ${props => props.theme.color.green};
   }

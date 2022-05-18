@@ -5,7 +5,6 @@ import { media } from "../styles/theme";
 import Nav from "../components/nav";
 
 const Home: NextPage = (props) => {
-  console.log(props);
   return (
     <>
       <Nav isLoggedIn={props}/>

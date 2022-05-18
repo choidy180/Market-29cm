@@ -88,6 +88,11 @@ export const GlobalStyle = createGlobalStyle`
             fill: #f2f3f4;
         }
     }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
     /* 스크롤바 설정*/
     html::-webkit-scrollbar{
         width: 4px;
