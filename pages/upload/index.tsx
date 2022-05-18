@@ -6,6 +6,8 @@ import { useState } from "react";
 import { media } from "../../styles/theme";
 import { dbService, storageService } from "../../firebase/firebaseConfig";
 import { addDoc, collection, getDocs } from "firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
+import { ref, uploadString } from "firebase/storage";
 
 
 const Upload: NextPage = (props) => {
@@ -32,7 +34,7 @@ const Upload: NextPage = (props) => {
       target: { files },
     } = event;
     const reader = new FileReader();
-    // 완료되면 finidhedEvent를 받는다.
+    // // 완료되면 finidhedEvent를 받는다.
     reader.onloadend = (finishedEvent) => {
       setImageLoad(finishedEvent.currentTarget["result"]);
     }
@@ -51,6 +53,8 @@ const Upload: NextPage = (props) => {
     setTitle("");
     setPrice("");
     setExplain("");
+    const fileRef = ref(storageService, `${props["userObj"]["uid"]}/${uuidv4()}}`);
+    const response = await uploadString(fileRef, imageLoad, "data_url");
     alert("등록완료 되었습니다.");
   }
   return(
