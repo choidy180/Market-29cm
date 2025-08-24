@@ -23,9 +23,8 @@
 ---
 
 ##  기능
-- 🌈 게시물 등록 및 확인
-- 📃 등록자와 채팅으로 대화나누기
-- ✏️ 게시물 정렬 기능 리스트업
+- 🌈 29CM 메인화면 및 전체 UI 반응형 구현
+- 📃 파이어베이스 DB 이용한 회원가입 및 상품 등록 및 관리 기능 구현
 ---
 
 ##  기술 스택
@@ -35,6 +34,8 @@
   <img src="https://img.shields.io/badge/ReactRouter-CA4245?style=flat-square&logo=ReactRouter&logoColor=white"/>
   <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white"/>
+  <img src="https://img.shields.io/badge/styled--components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=white"/>
 </p>
 
 
@@ -42,7 +43,7 @@
 ##  Install
 ```bash
 # 1) 레포지토리 복제
-git clone https://github.com/choidy180/carrot-market-exercise
+git clone https://github.com/choidy180/Market-29cm
 cd poke-next
 
 # 2) 의존성 설치
