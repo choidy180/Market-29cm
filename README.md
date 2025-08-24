@@ -3,7 +3,7 @@
   <img src="./public/29cm.jpg" alt="coin Banner" width="200px" />
 </p>
 
-<h1 align="center">🥕 Market-29</h1>
+<h1 align="center">☕ Market-29</h1>
 <p align="center">
   <b>Next.js와 Tailwinds CSS를 이용한 29CM 클론코딩</b>
 </p>
