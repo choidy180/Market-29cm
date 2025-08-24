@@ -45,7 +45,7 @@
 ```bash
 # 1) 레포지토리 복제
 git clone https://github.com/choidy180/Market-29cm
-cd poke-next
+cd Market-29cm
 
 # 2) 의존성 설치
 npm install
